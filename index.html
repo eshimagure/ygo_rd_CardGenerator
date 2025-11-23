@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" sizes="180x180" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <title>INDEX / YuGiOh RUSH DUEL-like Card Generator</title>
+</head>
+<body>
+  <div class="caption"><b>YuGiOh RUSH DUEL-like Card Generator（遊戯王ラッシュデュエル風カードジェネレーター）は、遊戯王ラッシュデュエル類似デザインカード画像作成ツールです。</b></div>
+  <div class="tabs">
+    <input id="sub00_tab" type="radio" name="tab_index" checked>
+    <label class="tab_index" for="sub00_tab">&#9888;注意事項・利用規約</label>
+    <input id="sub01_tab" type="radio" name="tab_index">
+    <label class="tab_index" for="sub01_tab">不具合・バグ等</label>
+    <input id="sub02_tab" type="radio" name="tab_index">
+    <label class="tab_index" for="sub02_tab">更新履歴</label>
+    <div class="tab_inner_content" id="sub00_content">
+      <div class="memo">
+        <ul>
+            <li class="red-p" style="font-size: 20px;"><b>作成したカード画像の印刷及び商用利用は禁止です。</b></li>
+            <li class="red-p">フリー素材、自分が描いたイラスト・撮影したもの以外の素材を使用して画像作成する事は禁止。それ以外の物を使用する場合は著作者の許可を取って下さい。</li>
+            <li class="red-p"><b>特定のイラストレーターの絵柄を学習させた生成AIの使用は禁止です。</b>
+              他生成AIイラストについては、AIツールの規約に従ってご利用下さい。
+            </li>
+            <li class="red-p">特定の人物や団体等を陥れるような内容の画像作成は禁止。</li>
+            <li class="red-p">あくまでも楽しむための趣味の範囲で、良識あるご利用を心掛けて下さいますようお願い致します。</li>
+            <li>作成したカード画像に関するトラブルについて、当サイトは一切責任を負いません。</li>
+            <li>当サイトの素材画像（カード画像のパーツ）の二次配布禁止。</li>
+            <li>動画・配信内でのご利用（サムネイル含む）は、概要欄にリンク（このページのURL）をお願い致します。報告は任意です。</li>
+            <li>ご使用のブラウザ、デバイスやOSによって文字がズレる事があります。予めご了承下さい。</li>
+            <li>予告なくページのURLが変わる場合がありますので、ブックマークはこちらのページのみお願い致します。</li>
+            <li>バグ報告やご意見は <a href="https://twitter.com/eshimagure" target="_blank">X（旧Twitter）</a> もしくは <a href="https://wavebox.me/wave/527p8nbsgwwstn1x/" target="_blank">Wavebox</a>（匿名ツール）までお願いします。</li>
+            <li>使用方法がわからない場合はこちらをご覧下さい⇒<a href="https://youtu.be/YUg36sRi7ow" target="_blank">使い方解説動画(youtube)</a></li>
+        </ul>
+        <div class="guide">
+            <p><b>
+                &#8659&#8659&#8659上記をご理解頂けた方はどうぞ&#8659&#8659&#8659
+            </b><p>
+
+            <div class="page_link">
+                <a href="single.html" target="_blank">
+                    <div class="banner"></div>
+                    <img src="images/card_icon.png" alt="" class="card_icon">
+                    <p>シングルカード</p>
+                </a>
+            </div>
+
+            <div class="page_link">
+                <a href="maximum.html" target="_blank">
+                    <div class="banner"></div>
+                    <span class="icon_wrap">
+                        <img src="images/card_icon.png" alt="" class="card_icon_max"><img src="images/card_icon.png" alt="" class="card_icon_max"><img src="images/card_icon.png" alt="" class="card_icon_max">
+                    </span>
+                    <p>マキシマムカード</p>
+                </a>
+            </div>
+        </div><!-- guide-->
+      </div>
+    </div>
+    <div class="tab_inner_content" id="sub01_content">
+      <div class="memo">
+        <ul>
+          <li>ツールが更新された場合、更新分を適用させるためブラウザのキャッシュを削除してからアクセスして下さい。それでもレイアウト崩れが解消されない場合はご連絡下さい。</li>
+          <li>画像サイズが大きい場合、ダウンロードやカード生成に10秒前後と時間が掛かることがあります。</li>
+          <li>生成画像がプレビューと異なり、文字・行間隔が大きく空いている場合、何度かカード生成ボタンを押下しDLすると直る場合があります。それでも改善しない場合、スクリーンショットでの画像保存でご対応お願い致します。</li>
+          <li>カード生成ボタンを押してもDLされない場合、スクリーンショットでの画像保存でご対応お願い致します。</li>
+          <li>DL時にカード名のフリガナがズレる事象が発生しております。フリガナを使用する場合、スクリーンショットでの画像保存でご対応お願い致します。</li>
+          <!-- <li>フィールド・装備魔法を選択した際、プレビューでは正常なのに生成画像に空白ができる場合があります。<br>
+            何度かカード生成を実行すると、正常な画像がダウンロードできます。（原因調査中）<br>
+          <img src="images/bugs.png" alt="バグ画像1" style="display: block;margin: 0 auto;"></li> -->
+        </ul>
+      </div>
+    </div>
+    <div class="tab_inner_content" id="sub02_content">MAXIMUM
+        <div class="memo">
+          <dd>2025/03/21</dd>
+          <dt>
+            ・リチュアル実装<br>
+            ・入力できるカード名の文字数を増加<br>
+            ・カードテキストの文字数を増加<br>
+          </dt>
+          <dd>2024/06/23</dd>
+          <dt>YuGiOh RUSH DUEL-like Card Generator リニューアル版公開</dt>
+          <dd>2023/10/09</dd>
+          <dt>YuGiOh RUSH DUEL-like Card Generator 正式版公開</dt>
+          <dd>2023/07/09</dd>
+          <dt>
+              ・画像をユーザー側で編集可能に<br>
+              ・カード名・属性のフリガナ対応<br>
+              ・RED Ver実装<br>
+              ・カード加工のエフェクト画像を変更<br>
+          </dt>
+          <dd>2023/06/19</dd>
+          <dt>ページデザイン・カード部分のフォントを一部変更</dt>
+          <dd>2023/06/17</dd>
+          <dt>レジェンド表記を実装。カードレイアウトを一部変更。</dt>
+          <dd>2023/06/16</dd>
+          <dt>YuGiOh RUSH DUEL-like Card Generator β.ver公開</dt>
+        </div>
+      </div>
+  </div>
+
+<div class="flex">
+  <div class="wrapper">
+  </div>
+</div>
+<footer>
+  <p>YuGiOh RUSH DUEL-like Card Generator<br>
+    (https://ygo-rd-fansite.ltt.jp/CardGenerator/)<br>
+作成者:エシマ since:2023.06.16</p>
+</footer>
+</body>
+</html>

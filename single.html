@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" sizes="180x180" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cropper.min.css">
+    <script src="js/cropper.min.js"></script>
+    <title>SINGLE / YuGiOh RUSH DUEL-like Card Generator</title>
+</head>
+<body>
+  <div class="caption">
+    画像を切り抜く（縦510 × 横480px）<br>
+    ※画像サイズが大きいと処理に時間が掛かることがあります。
+  </div>
+  <div class="tabs">
+    <input id="main_tab" type="radio" name="tab_item" checked>
+      <label class="tab_item" for="main_tab">メイン画像</label>
+    <input id="background_tab" type="radio" name="tab_item">
+      <label class="tab_item" for="background_tab">背景画像</label>
+
+    <!-- 「メイン画像」タブ領域 -->
+    <div class="tab_content" id="main_content">
+      <div class="cropper-area">
+        <div class="control">
+          <label>メイン画像を取り込む（スキルカード／オーバーラッシュレアの場合透過png）：<input type="file" name="src-main-img" accept="image/*"></label>
+          <img id="main-img">
+        </div>
+      </div>
+      <div class="method_wrapper">
+        <button class="resetbtn method mtd_01">リセット</button>
+          <button class="zoombtn method mtd_02">拡大</button>
+          <button class="shrinkbtn method mtd_02">縮小</button>
+          <button class="rotate_rbtn method mtd_02">右回転</button>
+          <button class="rotate_lbtn method mtd_02">左回転</button>
+          <button class="move_topbtn method mtd_03">↑</button>
+          <button class="move_bottombtn method mtd_03">↓</button>
+          <button class="move_leftbtn method mtd_03">←</button>
+          <button class="move_rightbtn method mtd_03">→</button>
+      </div>
+      <div class="flex-center">
+        <button type="button" class="btn_common trimBtn">トリミング</button>
+        <button type="button" class="img_reset btn_common">画像消去</button>
+      </div>
+    </div>
+
+    <!-- 「背景画像」タブ領域 -->
+    <div class="tab_content" id="background_content">
+      <div class="cropper-area">
+        <div class="control">
+          <label>背景画像を取り込む（オーバーラッシュレアの場合必要）：<input type="file" name="src-bg-img" accept="image/*"></label>
+          <img id="bg-img">
+        </div>
+      </div>
+      <div class="method_wrapper">
+        <button class="resetbtn method mtd_01">リセット</button>
+        <button class="zoombtn method mtd_02">拡大</button>
+        <button class="shrinkbtn method mtd_02">縮小</button>
+        <button class="rotate_rbtn method mtd_02">右回転</button>
+        <button class="rotate_lbtn method mtd_02">左回転</button>
+        <button class="move_topbtn method mtd_03">↑</button>
+        <button class="move_bottombtn method mtd_03">↓</button>
+        <button class="move_leftbtn method mtd_03">←</button>
+        <button class="move_rightbtn method mtd_03">→</button>
+      </div>
+      <div class="flex-center">
+        <button type="button" class="trimBtn btn_common">トリミング</button>
+        <button type="button" class="img_reset btn_common">画像消去</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- カードジェネレーター領域 -->
+  <div class="flex">
+    <div class="wrapper">
+      <!-- カード画像倍率スライダー領域 -->
+      <div class="slider-wrapper">
+        <p>カード画像倍率（1～5）&emsp;<span id="txt">4</span></p>
+        <input type="range" id="slider" min="1" max="5" value="4" />
+      </div>
+
+      <!-- カード画像領域 -->
+      <div id="canvas-box" class="scale-04">
+        <div id="processing_layer" class="no_image opacity-01"></div>
+        <img src="images/no_image.png" id="main-file" alt="メイン画像" class="z_01">
+        <img id="bg-file" alt="背景">
+        <div id="card_outer_base" class="card_outer_img"></div>
+        <div id="legend" class=""></div>
+        <div class="card_outer">
+          <div class="card_outer_line"></div>
+          <div id="card_inner" class="vanilla_inner">
+            <div class="card_shadow"></div>
+          </div>
+        </div>
+        <div id="card_name" class="vanilla_bg"></div>
+        <p id="name_p" class="name_width"><ruby id="name"></ruby></p>
+        <div id="card_attribute" class="vanilla_attribute"></div>
+        <div id="attribute_outer" class="dark">
+          <p id="attribute" class="white_op">闇</p>
+        </div>
+        <div id="text_wrapper">
+          <div id="status_wrapper">
+            <div id="status_outer">
+              <div class="status_d atk">ATK</div>
+              <div id="atk_wrapper">
+                <p class="num_common atk_stroke"></p>
+                <p id="atk_p" class="white"></p>
+              </div>
+              <div  class="status_d def">DEF</div>
+              <div id="def_wrapper">
+                <p class="num_common def_stroke"></p>
+                <p id="def_p" class="white"></p>
+              </div>
+            </div>
+            <div id="level_wrapper">
+              <p class="level_common level_stroke"></p>
+              <p id="level" class="white"></p>
+            </div>
+            <div id="status"></div>
+          </div>
+        <div id="card_text" class="vanilla_bg">
+          <div id="tribe_wrapper">
+              <div id="tribe"></div>
+          </div>
+          <p class="text"></p>
+          <div id="text_inner_images" class="text_inner"></div>
+        </div>
+        <div id="card_number">
+          <p id="card_number_p">&nbsp;&nbsp;YuGiOh RD-like Card Generator</p>
+          <p class="card_number_p1"></p>
+          <div id="unofficial_outer">
+            <p class="unofficial_p">unofficial</p>
+          </div>
+          <div id="unofficial" class="vanilla_unofficial"></div>
+        </div>
+        </div>
+      </div><!--canvas box -->
+    </div>
+
+    <div class="wrapper">
+      <!-- カード内容編集領域1 -->
+      <input id="block-01" type="checkbox" class="toggle" checked>
+      <label class="Label" for="block-01">クリックでカード内容欄 開閉</label>
+      <div class="content">
+          <h4>カード内容</h4>
+          <p style="font-size: 13px;margin-left: 13px;">
+            カード名にルビを振ることができます。
+            （例：<ruby><rb>漢字</rb><rt>かんじ</rt>、ひら<rt></rt><rb>仮名</rb><rt>がな</rt></ruby>）<br>
+            ↓コピペ用ボックス
+          </p>
+          <input type="text" id="ruby" value="漢字<rt>かんじ</rt>、ひら<rt></rt>仮名<rt>がな</rt>" onfocus="this.select();" readonly>
+          <input type="text" id="name_form" class="name_form" value="" placeholder="カード名（全角12文字/半角25文字まで）">
+          
+          <fieldset>
+            <h5>カード名の文字数を増やす</h5>
+            <label for="name_narrow00" class="check-style"><input type="checkbox" name="" id="name_narrow00" value="" onclick="name_narrow00()"><span class="checkmark"></span>文字数14～17</label>
+            <label for="name_narrow01" class="check-style"><input type="checkbox" name="" id="name_narrow01" value="" onclick="name_narrow01()"><span class="checkmark"></span>文字数18～22</label>
+          </fieldset>
+
+          <!-- 属性選択領域 -->
+          <fieldset>
+            <input type="radio" name="attribute" id="dark_attribute" class="radio-inline_input" onclick="dark_btn()" checked>
+              <label class="radio-inline_label small" for="dark_attribute">闇</label>
+            <input type="radio" name="attribute" id="light_attribute" class="radio-inline_input" onclick="light_btn()">
+              <label class="radio-inline_label small" for="light_attribute">光</label>
+            <input type="radio" name="attribute" id="earth_attribute" class="radio-inline_input" onclick="earth_btn()">
+              <label class="radio-inline_label small" for="earth_attribute">地</label>
+            <input type="radio" name="attribute" id="water_attribute" class="radio-inline_input" onclick="water_btn()">
+              <label class="radio-inline_label small" for="water_attribute">水</label>
+            <input type="radio" name="attribute" id="fire_attribute" class="radio-inline_input" onclick="fire_btn()">
+              <label class="radio-inline_label small" for="fire_attribute">炎</label>
+            <input type="radio" name="attribute" id="wind_attribute" class="radio-inline_input" onclick="wind_btn()">
+              <label class="radio-inline_label small" for="wind_attribute">風</label>
+            <input type="radio" name="attribute" id="magic_attribute" class="radio-inline_input" onclick="magic_btn()">
+              <label class="radio-inline_label small" for="magic_attribute">魔</label>
+            <input type="radio" name="attribute" id="trap_attribute" class="radio-inline_input" onclick="trap_btn()">
+              <label class="radio-inline_label small" for="trap_attribute">罠</label>
+          </fieldset>
+
+          <!-- カード情報入力領域 -->
+          <input type="text" class="attribute_form" value="" placeholder="属性（1文字まで）">
+          <input type="text" class="level_form" value="" placeholder="レベル（半角数字2文字まで）">
+          <br>
+          <input type="text" class="atk_form" value="" placeholder="攻撃力（半角数字4文字まで）">
+          <input type="text" class="def_form" value="" placeholder="守備力（半角数字4文字まで）">
+          <br>
+          <input type="text" class="tribe_form" value="族／" placeholder="種族/通常・効果（24文字まで）">
+          <input type="text" class="number_form" value="" placeholder="カードNo（15文字まで）">
+          <textarea class="text_form" placeholder="カードテキスト。改行は自動で反映されます。 一列35文字×7行程度"></textarea>
+          <fieldset>
+            <label for="word_count" class="check-style"><input type="checkbox" name="" id="word_count" value="" onclick="word_count()"><span class="checkmark"></span>カードテキストの文字数を増やす</label>
+          </fieldset>
+
+          <h4>カード枠</h4>
+          <fieldset>
+            <input type="radio" name="outer" id="vanilla_color" class="radio-inline_input" onclick="vanilla_color_btn()" checked>
+              <label class="radio-inline_label" for="vanilla_color">通常モンスター</label>
+            <input type="radio" name="outer" id="effect_color" class="radio-inline_input" onclick="effect_color_btn()">
+              <label class="radio-inline_label" for="effect_color">効果モンスター</label>
+            <input type="radio" name="outer" id="fusion_color" class="radio-inline_input" onclick="fusion_color_btn()">
+              <label  class="radio-inline_label" for="fusion_color">フュージョン</label>
+            <input type="radio" name="outer" id="ritual_color" class="radio-inline_input" onclick="ritual_color_btn()">
+            <label  class="radio-inline_label" for="ritual_color">リチュアル</label>
+            <input type="radio" name="outer" id="magic_color"class="radio-inline_input" onclick="magic_color_btn()">
+              <label class="radio-inline_label" for="magic_color">魔法</label>
+            <input type="radio" name="outer" id="trap_color" class="radio-inline_input" onclick="trap_color_btn()">
+              <label class="radio-inline_label" for="trap_color">罠</label>
+
+            <br>
+            <input type="radio" name="outer" id="custom_color" class="radio-inline_input" onclick="custom_color_btn()">
+              <label class="radio-inline_label" for="custom_color">色カスタム</label>
+            <label><input type="color" id="custom_color_picker" class="hidden"></label>
+
+            <input type="radio" name="outer" id="skill_color" class="radio-inline_input" onclick="skill_color_btn()">
+            <label class="radio-inline_label" for="skill_color">スキルカード</label>
+            <label><input type="color" id="skill_color_picker" class="hidden"></label>
+          </fieldset>
+      </div><!-- アコーディオン -->
+    </div>
+
+    <div class="wrapper">
+      <!-- カード内容編集領域2 -->
+      <input id="block-02" type="checkbox" class="toggle" checked>
+      <label class="Label" for="block-02">クリックで開閉</label>
+        <div class="content">
+          <h4>魔法アイコン</h4>
+            <fieldset>
+              <input type="radio" name="spell" id="s_nomal" class="radio-inline_input" onclick="s_nomal_btn()" checked>
+                <label label class="radio-inline_label" for="s_nomal">なし</label>
+              <input type="radio" name="spell" id="s_field" class="radio-inline_input" onclick="s_field_btn()">
+                <label label class="radio-inline_label" for="s_field">フィールド</label>
+              <input type="radio" name="spell" id="s_equip" class="radio-inline_input" onclick="s_equip_btn()">
+                <label label class="radio-inline_label" for="s_equip">装備</label>
+              <input type="radio" name="spell" id="s_ritual" class="radio-inline_input" onclick="s_ritual_btn()">
+                <label label class="radio-inline_label" for="s_ritual">リチュアル</label>
+            </fieldset>
+
+          <h4>レアリティ他</h4>
+            <fieldset>
+              <label for="orr" class="check-style">
+                <input type="checkbox" name="" id="orr" value="" onclick="orr_btn()"><span class="checkmark"></span>オーバーラッシュレア
+              </label>
+              <label for="monster_status" class="check-style">
+                <input type="checkbox" name="monster_status" id="monster_status" value="" onchange="monster_status_btn();"><span class="checkmark"></span>レベル・ATK/DEF欄削除
+              </label>
+            </fieldset>
+
+            <h5>レジェンド</h5>
+            <fieldset>
+              <input type="radio" name="p_legend" id="l_none" class="radio-inline_input" onclick="l_none_btn()" checked>
+                <label label class="radio-inline_label" for="l_none">なし</label>
+              <input type="radio" name="p_legend" id="l_silver" class="radio-inline_input" onclick="l_silver_btn()">
+                <label label class="radio-inline_label" for="l_silver">シルバー</label>
+              <input type="radio" name="p_legend" id="l_gold" class="radio-inline_input" onclick="l_gold_btn()">
+                <label label class="radio-inline_label" for="l_gold">ゴールド</label>
+              <input type="radio" name="p_legend" id="l_red" class="radio-inline_input" onclick="l_red_btn()">
+                <label label class="radio-inline_label" for="l_red">レッド</label>
+            </fieldset>
+
+            <h5>モンスター名</h5>
+            <fieldset>
+              <input type="radio" name="m_name" id="m_none" class="radio-inline_input"  onclick="m_none_btn()" checked>
+                <label label class="radio-inline_label" for="m_none">通常</label>
+              <input type="radio" name="m_name" id="m_silver" class="radio-inline_input" onclick="m_silver_btn()">
+                <label label class="radio-inline_label" for="m_silver">シルバー</label>
+              <input type="radio" name="m_name" id="m_gold" class="radio-inline_input" onclick="m_gold_btn()">
+                <label label class="radio-inline_label" for="m_gold">ゴールド</label>
+              <input type="radio" name="m_name" id="m_red" class="radio-inline_input" onclick="m_red_btn()">
+                <label label class="radio-inline_label" for="m_red">レッド</label>
+            </fieldset>
+
+            <h5>属性名</h5>
+              <fieldset>
+                <input type="radio" name="a_name" id="a_none" class="radio-inline_input"  onclick="a_none_btn()" checked>
+                  <label label class="radio-inline_label" for="a_none">通常</label>
+                <input type="radio" name="a_name" id="a_silver" class="radio-inline_input" onclick="a_silver_btn()">
+                  <label label class="radio-inline_label" for="a_silver">シルバー</label>
+                <input type="radio" name="a_name" id="a_gold" class="radio-inline_input"  onclick="a_gold_btn()">
+                  <label label class="radio-inline_label" for="a_gold">ゴールド</label>
+                <input type="radio" name="a_name" id="a_red" class="radio-inline_input"  onclick="a_red_btn()">
+                  <label label class="radio-inline_label" for="a_red">レッド</label>
+              </fieldset>
+
+            <h5>レベル/ATK・DEF</h5>
+            <fieldset>
+              <input type="radio" name="s_name" id="s_none" class="radio-inline_input" onclick="s_none_btn()" checked>
+                <label label class="radio-inline_label" for="s_none">通常</label>
+              <input type="radio" name="s_name" id="s_silver" class="radio-inline_input" onclick="s_silver_btn()">
+                <label label class="radio-inline_label" for="s_silver">シルバー</label>
+              <input type="radio" name="s_name" id="s_gold" class="radio-inline_input"  onclick="s_gold_btn()">
+                <label label class="radio-inline_label" for="s_gold">ゴールド</label>
+              <input type="radio" name="s_name" id="s_red" class="radio-inline_input"  onclick="s_red_btn()">
+              <label label class="radio-inline_label" for="s_red">レッド</label>
+            </fieldset>
+        </div> <!--アコーディオン-->
+
+        <h5>加工</h5>
+        <fieldset>
+          <div class="slider-wrapper">
+            <p>加工レイヤー濃度（1～3）&emsp;<span id="txt_op">1</span></p>
+            <input type="range" id="slider_op" min="1" max="3" value="1" />
+          </div>
+          <input type="radio" name="processing" id="p_none" class="radio-inline_input" onclick="p_none_btn()" checked>
+            <label class="radio-inline_label" for="p_none">加工なし</label>
+          <input type="radio" name="processing" id="p_foil" class="radio-inline_input" onclick="p_foil_btn()">
+            <label class="radio-inline_label" for="p_foil">ホイル</label>
+          <input type="radio" name="processing" id="p_parallel" class="radio-inline_input" onclick="p_parallel_btn()">
+            <label class="radio-inline_label" for="p_parallel">パラレル</label>
+          <input type="radio" name="processing" id="p_secret" class="radio-inline_input" onclick="p_secret_btn()">
+          <label class="radio-inline_label" for="p_secret">シークレット</label>
+        </fieldset>
+
+        <!-- カード生成ボタンなどの領域 -->
+        <button id="download-btn" type="button" value="カード生成！">カード生成！</button>
+        <div class="center">
+          <a href="https://x.com/intent/tweet?text=遊戯王ラッシュデュエル風カードジェネレーター&url=https://ygo-rd-fansite.ltt.jp/CardGenerator" rel="nofollow" target="_blank" class="my-twitter-share-button">▶Xでシェアする</a>
+        </div>
+    </div><!--wrapper-->
+  </div><!--flex-->
+
+  <footer>
+    <p>YuGiOh RUSH DUEL-like Card Generator<br>
+      (https://ygo-rd-fansite.ltt.jp/CardGenerator/)<br>
+      作成者:エシマ since:2023.06.16</p>
+  </footer>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- <script src="js/html2canvas.min.js"></script> CDNに変更した-->
+    <script src="js/single.js"></script>
+</body>
+</html>
